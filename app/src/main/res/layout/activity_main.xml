@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".MainActivity">
+
+    <!-- formula -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvFormula"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="60dp"
+        android:gravity="end"
+        android:textColor="@color/soft_purple"
+        android:textSize="30sp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Formula"/>
+
+    <!-- result -->
+
+    <!-- buttonsLayouts -->
+
+    <!-- buttons -->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
