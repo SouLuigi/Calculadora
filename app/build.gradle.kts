@@ -6,6 +6,9 @@ plugins {
 android {
     namespace = "com.ex.calculator"
     compileSdk = 35
+    buildFeatures {
+        viewBinding = true
+    }
 
     defaultConfig {
         applicationId = "com.ex.calculator"
