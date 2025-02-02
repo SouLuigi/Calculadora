@@ -1,15 +1,17 @@
 package com.ex.calculator
 
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.ex.calculator.databinding.ActivityMainBinding
 import com.google.android.material.button.MaterialButton
-
+import androidx.core.view.children
 class MainActivity : AppCompatActivity() {
 
+    //binding
     private lateinit var binding: ActivityMainBinding
 
     private var firstNumber = ""
@@ -28,80 +30,33 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        binding.tvFormula.text = ""
-        binding.tvResult.text = "0"
-
-        setNumberButtonListeners()
-        setOperatorButtonListeners()
-        setSpecialButtonListeners()
-    }
-
-    private fun setNumberButtonListeners() {
-        val numberButtons = listOf(
-            binding.zero, binding.one, binding.two, binding.three,
-            binding.four, binding.five, binding.six,
-            binding.seven, binding.eight, binding.nine
-        )
-
-        for (button in numberButtons) {
-            button.setOnClickListener {
-                val number = (it as MaterialButton).text.toString()
-                currentNumber += number
-                binding.tvFormula.text = "$firstNumber $currentOperator $currentNumber"
-            }
-        }
-    }
-
-    private fun setOperatorButtonListeners() {
-        val operators = mapOf(
-            binding.plus to "+",
-            binding.minus to "-",
-            binding.multiply to "×",
-            binding.divide to "÷"
-        )
-        for ((button, symbol) in operators) {
-            button.setOnClickListener {
-                if (currentNumber.isNotEmpty()) {
-                    firstNumber = currentNumber
-                    currentOperator = symbol
-                    currentNumber = ""
-                    binding.tvFormula.text = "$firstNumber $currentOperator"
-                }
-            }
-        }
-    }
-
-    private fun setSpecialButtonListeners() {
-        binding.clear.setOnClickListener {
-            firstNumber = ""
-            currentNumber = ""
-            currentOperator = ""
-            result = ""
-            binding.tvFormula.text = ""
-            binding.tvResult.text = "0"
-        }
-        binding.equals.setOnClickListener {
-            if (firstNumber.isNotEmpty() && currentNumber.isNotEmpty()) {
-                val result = calculate(firstNumber.toDouble(), currentNumber.toDouble(), currentOperator)
-                binding.tvFormula.text = "$firstNumber $currentOperator $currentNumber ="
-                binding.tvResult.text = result.toString()
-            }
-        }
-    }
-
-    private fun calculate(num1: Double, num2: Double, operator: String): Double {
-        return when (operator) {
-            "+" -> num1 + num2
-            "-" -> num1 - num2
-            "×" -> num1 * num2
-            "÷" -> {
-                if (num2 != 0.0) num1 / num2 else {
-                    binding.tvResult.text = "Erro: Divisão por zero"
-                    return Double.NaN
-                }
-            }
-            else -> 0.0
+        // get all buttons
+        binding.apply {
+           main.children.filterIsInstance<Button>().forEach { button ->
+               button.setOnClickListener{
+                   //get clicked button text
+                   val buttonText = button.text.toString()
+                   when{
+                       buttonText.matches(Regex("[0-9]"))->{
+                           if(currentOperator.isEmpty()){
+                               firstNumber += buttonText
+                               tvResult.text = firstNumber
+                           }else{
+                               currentNumber += buttonText
+                               tvResult.text = currentNumber
+                           }
+                       }
+                       buttonText.matches((Regex("[+\\-*/]"))->{
+                           currentNumber = ""
+                           if (tvResult.text.toString().isNotEmpty())
+                           {
+                               currentOperator = buttonText
+                               tvResult.text = "0"
+                           }
+                       }
+                   }
+               }
+           }
         }
     }
 }
