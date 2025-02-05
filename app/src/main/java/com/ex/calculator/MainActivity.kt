@@ -6,9 +6,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.ex.calculator.databinding.ActivityMainBinding
-import com.google.android.material.button.MaterialButton
 import androidx.core.view.children
+import com.ex.calculator.databinding.ActivityMainBinding
+
+
 class MainActivity : AppCompatActivity() {
 
     //binding
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         }
         // get all buttons
         binding.apply {
-           main.children.filterIsInstance<Button>().forEach { button ->
+           binding.main.children.filterIsInstance<Button>().forEach { button ->
                button.setOnClickListener{
                    //get clicked button text
                    val buttonText = button.text.toString()
@@ -46,17 +47,64 @@ class MainActivity : AppCompatActivity() {
                                tvResult.text = currentNumber
                            }
                        }
-                       buttonText.matches((Regex("[+\\-*/]"))->{
+                       buttonText.matches((Regex("[+\\-*/]" )))->{
                            currentNumber = ""
                            if (tvResult.text.toString().isNotEmpty())
                            {
                                currentOperator = buttonText
+                               tvFormula.text = "$firstNumber $currentOperator"
                                tvResult.text = "0"
                            }
+                       }
+                       buttonText == "="->{
+                           if(currentNumber.isNotEmpty() && currentOperator.isNotEmpty()){
+                               tvFormula.text = "$firstNumber$currentOperator$currentNumber"
+                               result = evaluateExpression(firstNumber,currentNumber,currentOperator)
+                               firstNumber = result
+                               tvResult.text = result
+                           }
+                       }
+                       buttonText == "."->{
+                           if(currentOperator.isEmpty())
+                           {
+                               if (! firstNumber.contains("."))
+                               {
+                                   firstNumber += if(firstNumber.isEmpty()) "0$buttonText"
+                                   else buttonText
+                                   tvResult.text = firstNumber
+                               }
+                           }else
+                           {
+                               if (! currentNumber.contains(".")) {
+                                   currentNumber += if (currentNumber.isEmpty()) {
+                                       "0$buttonText"
+                                   } else buttonText
+                                   tvResult.text = currentNumber
+                               }
+                           }
+                       }
+                       buttonText == "C"->{
+                           currentNumber = ""
+                           firstNumber = ""
+                           currentOperator = ""
+                           tvResult.text = "0"
+                           tvFormula.text = ""
                        }
                    }
                }
            }
         }
+    }
+    private fun evaluateExpression(firstNumber: String, currentNumber: String, operador: String):String{
+        val num1 = firstNumber.toDoubleOrNull()?: return "Erro"
+        val num2 = currentNumber.toDoubleOrNull()?: return "Erro"
+         return when(operador) {
+             "+" -> (num1 + num2).toString()
+             "-" -> (num1 - num2).toString()
+             "*" -> (num1 * num2).toString()
+             "/" -> (num1 / num2).toString()
+             else -> ""
+
+         }
     }
 }
