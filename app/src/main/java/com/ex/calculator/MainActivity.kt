@@ -9,12 +9,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.children
 import com.ex.calculator.databinding.ActivityMainBinding
 
-
 class MainActivity : AppCompatActivity() {
 
-    //binding
     private lateinit var binding: ActivityMainBinding
-
     private var firstNumber = ""
     private var currentNumber = ""
     private var currentOperator = ""
@@ -31,11 +28,11 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        // get all buttons
+
         binding.apply {
            binding.main.children.filterIsInstance<Button>().forEach { button ->
                button.setOnClickListener{
-                   //get clicked button text
+
                    val buttonText = button.text.toString()
                    when{
                        buttonText.matches(Regex("[0-9]"))->{
@@ -90,6 +87,7 @@ class MainActivity : AppCompatActivity() {
                            tvResult.text = "0"
                            tvFormula.text = ""
                        }
+                       //Melhorar a logica
                        buttonText == "←"->{
                            tvResult.text = "0"
                        }
