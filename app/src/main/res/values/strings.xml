@@ -2,6 +2,7 @@
     <string name="app_name">Calculator</string>
     <string name="_0">0</string>
     <string name="c">C</string>
+    <string name="delete">←</string>
     <string name="plus">+</string>
     <string name="divide">/</string>
     <string name="_7">7</string>

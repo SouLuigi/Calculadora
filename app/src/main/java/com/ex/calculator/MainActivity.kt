@@ -90,6 +90,9 @@ class MainActivity : AppCompatActivity() {
                            tvResult.text = "0"
                            tvFormula.text = ""
                        }
+                       buttonText == "←"->{
+                           tvResult.text = "0"
+                       }
                    }
                }
            }
